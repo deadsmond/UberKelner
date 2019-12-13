@@ -1,0 +1,61 @@
+///////////////////////////////////////////////////////////////
+Trenowanie Wabbita:
+vw datamodel_rabbit_repaired.txt -c --passes 25 -f rabbit.model
+Response to file:
+vw -i ./data/rabbit.model -t ./data/rabbit_input.txt -p ./data/rabbit_result.txt --quiet
+//////////////////////////////////////////////////////////////
+
+
+model verbal vomit:
+
+#ruchu w rozwiązaniu (D- prawo, A-lewo, W-góra, S-dół) | stan otoczenia (0-blank, 1-wall, 20 - furnace inactive,
+    21-furnace active, 30-table inactive, 31-table active, 4 waiter)
+
+
+convert = {
+    "_": 0,
+    "X": 1,
+    "F": 20,
+    "E": 21,
+    "T": 30,
+    "Y": 31,
+    "W": 4
+}
+moves = {
+    "[0, 1]": "W",
+    "[0, -1]": "S",
+    "[-1, 0]": "A",
+    "[1, 0]": "D",
+}
+
+przykład:
+
+dla otoczenia
+XXX
+XW_
+XFX
+
+koordynaty w datamodel:
+
+0x0 1x0 2x0
+1x0 1x1 2x1
+2x0 2x1 2x2
+
+datalog:
+
+D | 1x0: 1 2x1: 20 1x0: 1 2x1: 0
+lub jeśli kuchnia jest aktywna
+D | 1x0: 1 2x1: 21 1x0: 1 2x1: 0
+
+można zwiększyć skanowany obszar o dodatkowy kwadrat, np:
+XXXXX
+XXXXX
+XXW__
+XXFXX
+XXXXX
+
+wtedy koordynaty:
+
+0x0 1x0 2x0 3x0 4x0
+1x0 1x1 ...
+
